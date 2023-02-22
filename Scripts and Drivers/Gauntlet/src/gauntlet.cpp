@@ -19,17 +19,25 @@ char *formatSensorData(int addr, float x, float y)
     return buf;
 }
 
-void callbackFn(float x, float y, int addr, int num)
+void serialCallbackFn(float x, float y, int addr, int num)
 {
     char *buf = formatSensorData(addr, x, y);
     Serial.println(buf);
     free(buf);
 }
 
-void wifiCallbackFn(float x, float y, int addr, int num){
-    char *buf = formatSensorData(addr, x, y);
-    Conn::write(buf, 20);
-    Conn::write("\n",1);
+char *Gauntlet::formatSensorData(int addr, float x, float y)
+{
+    char *buf = (char *)malloc(sizeof(char) * 18); // abc-179.12  -2.45\0
+    sprintf(buf, "%s%7.2f%7.2f\0", getName(addr), x, y);
+    return buf;
+}
+
+void Gauntlet::callbackFn(float x, float y, int addr, int num)
+{
+    char *buf = Gauntlet::formatSensorData(addr, x, y);
+    Conn::write(buf, 17);
+    Conn::write("\n", 1);
     free(buf);
 }
 
@@ -37,12 +45,23 @@ Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, u
 {
     uint8_t addr[] = {thumb, index, middle, ring, little, wrist};
     flexSensors = new MultiFlex(6, addr);
+    for (int i = 0; i < 256; i++)
+    {
+        names[i] = "non";
+    }
+    names[thumb] = "thu";
+    names[index] = "ind";
+    names[middle] = "mid";
+    names[ring] = "rin";
+    names[little] = "lit";
+    names[wrist] = "wri";
 }
 
 void Gauntlet::begin()
 {
     flexSensors->begin();
-    flexSensors->setCallbackFn(wifiCallbackFn);
+    flexSensors->setCallbackFn([this](float x, float y, int addr, int num){callbackFn(x, y, addr, num);}); //yeah ugly.... but it passes this.callbackFn to setCallbackFn, deal with it...
+    //flexSensors->setCallbackFn(serialCallbackFn);
 }
 
 void Gauntlet::loop()
@@ -50,4 +69,9 @@ void Gauntlet::loop()
     Conn::beginPacket();
     flexSensors->loop();
     Conn::endPacket();
+}
+
+const char *Gauntlet::getName(byte addr)
+{
+    return names[addr];
 }

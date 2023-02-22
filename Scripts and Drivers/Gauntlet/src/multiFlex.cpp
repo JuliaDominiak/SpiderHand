@@ -36,7 +36,7 @@ float MultiFlex::getY(int sensorNum)
     return flexSensors[sensorNum].getY();
 }
 
-void MultiFlex::setCallbackFn(void callbackFn(float, float, int, int))
+void MultiFlex::setCallbackFn(std::function<void(float, float, int, int)> callbackFn)
 {
     this->callbackFn = callbackFn;
 }
