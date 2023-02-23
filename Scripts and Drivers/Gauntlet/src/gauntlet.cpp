@@ -45,7 +45,7 @@ Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, u
 {
     uint8_t addr[] = {thumb, index, middle, ring, little, wrist};
     flexSensors = new MultiFlex(6, addr);
-    //this->accel = Accel(accel);
+    this->accel = Accel(accel);
     for (int i = 0; i < 256; i++)
     {
         names[i] = "non";
@@ -60,17 +60,16 @@ Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, u
 
 void Gauntlet::begin()
 {
-    //accel.begin();
+    accel.begin();
     flexSensors->begin();
     flexSensors->setCallbackFn([this](float x, float y, int addr, int num){callbackFn(x, y, addr, num);}); //yeah ugly.... but it passes this.callbackFn to setCallbackFn, deal with it...
-    //flexSensors->setCallbackFn(serialCallbackFn);
 }
 
 void Gauntlet::loop()
 {
     Conn::beginPacket();
     flexSensors->loop();
-    //accel.begin();
+    accel.loop();
     Conn::endPacket();
 }
 
