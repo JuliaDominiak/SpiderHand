@@ -1,13 +1,14 @@
+#include "I2Cdev.h"
 #include "MPU6050.h"
 
 #pragma once
 
-class Accel{
+class Gyro{
     private:
     MPU6050 mpu;
     public:
-    Accel(){};
-    Accel(uint8_t addr);
+    Gyro(){};
+    Gyro(uint8_t addr);
     void begin();
     void loop();
 };
