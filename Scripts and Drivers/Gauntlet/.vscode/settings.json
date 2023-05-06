@@ -1,0 +1,24 @@
+{
+    "files.associations": {
+        "*.tcc": "cpp",
+        "cctype": "cpp",
+        "cerrno": "cpp",
+        "climits": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+        "cstdarg": "cpp",
+        "cstddef": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "functional": "cpp",
+        "iosfwd": "cpp",
+        "streambuf": "cpp",
+        "typeinfo": "cpp"
+    }
+}
