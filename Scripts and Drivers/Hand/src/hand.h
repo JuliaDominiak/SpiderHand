@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Adafruit_PWMServoDriver.h>
 #include <map>
+#include "utils.h"
 
 #define DIM_NUM 2
 
@@ -10,8 +11,9 @@ class Hand{
     private:
     Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver();
     std::map<std::string,int*> jointToServo;
+    std::map<int,int*> servoToRange;
     public:
     Hand();
-    void addServo(std::string jointName, byte dimensionIndex, int servoAddress);
+    void addServo(std::string jointName, byte dimensionIndex, int servoAddress, uint16_t min, uint16_t max);
     void parseCommand(std::string cmd);
 };
