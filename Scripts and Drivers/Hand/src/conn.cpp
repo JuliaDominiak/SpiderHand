@@ -22,6 +22,7 @@ void Conn::udpCallback(AsyncUDPPacket& packet){
     size_t size = packet.length();
     if (size != 17){
         Serial.printf("Malformed packet (wrong size: %d) (%s)", size, buf);
+        return;
     }
     Serial.printf("Got packet %s\n", buf);
     hand->parseCommand(buf);

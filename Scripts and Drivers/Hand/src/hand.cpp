@@ -1,7 +1,9 @@
 #include "hand.h"
 
 Hand::Hand(){
-    //pca.begin();
+    pca = Adafruit_PWMServoDriver();
+    pca.begin();
+    pca.setPWMFreq(50);
 }
 
 void Hand::addServo(std::string jointName, byte dimensionIndex, int servoAddress, uint16_t min, uint16_t max){
@@ -38,12 +40,12 @@ void Hand::parseCommand(std::string cmd){
         int* range = servoToRange.at(servoarr[0]);
         float pwm = map_Generic(x, 0.0f, 100.0f, (float)range[0], (float)range[1]);
         Serial.printf("setting %d to %f%, val:%f", servoarr[0], x, pwm);
-        //pca.setPWM(servoarr[0], 0, pwm);
+        pca.setPWM(servoarr[0], 0, pwm);
     }
     if (servoarr[1]!=-1){
         int* range = servoToRange.at(servoarr[1]);
         float pwm = map_Generic(y, 0.0f, 100.0f, (float)range[0], (float)range[1]);
         Serial.printf("setting %d to %f%, val:%f", servoarr[1], y, pwm);
-        //pca.setPWM(servoarr[1], 0, pwm);
+        pca.setPWM(servoarr[1], 0, pwm);
     }
 }

@@ -9,7 +9,7 @@
 
 class Hand{
     private:
-    Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver();
+    Adafruit_PWMServoDriver pca;
     std::map<std::string,int*> jointToServo;
     std::map<int,int*> servoToRange;
     public:
