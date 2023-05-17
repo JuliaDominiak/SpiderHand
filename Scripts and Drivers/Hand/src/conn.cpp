@@ -2,14 +2,12 @@
 
 
 AsyncUDP Conn::udp;
-const char* Conn::host;
 uint16_t Conn::port;
 Hand* Conn::hand;
 
-void Conn::begin(const char* host, uint16_t port, Hand* hand)
+void Conn::begin(uint16_t port, Hand* hand)
 {
     Conn::hand = hand;
-    Conn::host = host;
     Conn::port = port;
     WiFi.mode(WIFI_AP);
     WiFi.softAP("hand", "244466666");
