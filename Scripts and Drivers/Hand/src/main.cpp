@@ -16,7 +16,7 @@ void setup() {
   hand->addServo("wri", 1, 4, 307, 150);
   //hand->addServo("wri", 2, 5, 196, 540);
   hand->addServo("elb", 2, 6, 433, 150);
-  Conn::begin(80, hand);
+  Conn::begin(1420, hand);
   Serial.println("setup done");
 }
 

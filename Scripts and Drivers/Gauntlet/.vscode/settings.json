@@ -19,6 +19,11 @@
         "functional": "cpp",
         "iosfwd": "cpp",
         "streambuf": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "exception": "cpp",
+        "fstream": "cpp",
+        "new": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp"
     }
 }

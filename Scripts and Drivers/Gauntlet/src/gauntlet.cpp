@@ -35,13 +35,15 @@ char *Gauntlet::formatSensorData(int addr, float x, float y)
 
 void Gauntlet::callbackFn(float x, float y, int addr, int num)
 {
+    Conn::beginPacket();
     uint8_t idx = addrToIdx[addr];
     float xCal = map_Generic<float>(x, flexCalibrationData[idx][0][0], flexCalibrationData[idx][0][1], 0, 100);
     float yCal = map_Generic<float>(y, flexCalibrationData[idx][1][0], flexCalibrationData[idx][1][1], 0, 100);
     char *buf = Gauntlet::formatSensorData(addr, xCal, yCal);
     Conn::write(buf, 17);
-    Conn::write("\n", 1);
+    //Conn::write("\n", 1);
     free(buf);
+    Conn::endPacket();
 }
 
 Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, uint8_t little, uint8_t wrist, uint8_t gyro)
@@ -110,10 +112,8 @@ void Gauntlet::begin()
 
 void Gauntlet::loop()
 {
-    Conn::beginPacket();
     flexSensors->loop();
     //gyro.loop();
-    Conn::endPacket();
 }
 
 const char *Gauntlet::getName(byte addr)

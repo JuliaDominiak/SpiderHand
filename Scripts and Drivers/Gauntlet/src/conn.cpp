@@ -9,17 +9,16 @@ void Conn::begin(const char* host, uint16_t port)
     Conn::host = host;
     Conn::port = port;
     WiFi.mode(WIFI_STA);
-    WiFi.mode(WIFI_AP);
-    //WiFi.begin("Nope", "61276127");
-    WiFi.softAP("gauntlet", "244466666");
-    /*while (WiFi.status() != WL_CONNECTED)
+    WiFi.begin("hand", "244466666");
+    //WiFi.softAP("gauntlet", "244466666");
+    while (WiFi.status() != WL_CONNECTED)
     {
         Serial.print(WiFi.status());
         delay(1000);
-    }*/
+    }
 
     Serial.println("WiFi Connected");
-    Client.begin(81);
+    Client.begin(port);
 }
 
 void Conn::beginPacket(){

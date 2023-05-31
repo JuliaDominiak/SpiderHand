@@ -25,7 +25,11 @@ void Hand::parseCommand(std::string cmd){
     std::string jointName = cmd.substr(0,3);
     float x = std::stof(cmd.substr(3,7));
     float y = std::stof(cmd.substr(10,7));
+    
     Serial.printf("parsed: %s, %f, %f\n", jointName.c_str(),x,y);
+
+    x = clamp_Generic<float>(x, 0, 100);
+    y = clamp_Generic<float>(y, 0, 100);
 
     auto servoarrItr = jointToServo.find(jointName);
     int* servoarr;
