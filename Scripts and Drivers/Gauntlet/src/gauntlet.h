@@ -1,39 +1,54 @@
-#include "multiFlex.h"
+//#include "multiFlex.h"
 #include "conn.h"
 #include "gyro.h"
 #include "utils.h"
+#include "SparkFun_Displacement_Sensor_Arduino_Library.h"
+#include <map>
 
 #pragma once
+
+struct FlexSensor{
+    std::string jointName;
+    int servoAddress;
+    float minX;
+    float maxX;
+    float minY;
+    float maxY;
+};
 
 class Gauntlet
 {
 private:
-    MultiFlex *flexSensors = NULL;
-    uint8_t addrToIdx[256] = {};
-    char const* names[256] = {};
+    struct FlexSensorData {
+        std::string jointName;
+        int servoAddress;
+        float minX;
+        float maxX;
+        float minY;
+        float maxY;
+        ADS sensor;
+        FlexSensorData(FlexSensor definition){
+            jointName = definition.jointName;
+            servoAddress = definition.servoAddress;
+            minX = definition.minX;
+            maxX = definition.maxX;
+            minY = definition.minY;
+            maxY = definition.maxY;
+            sensor = ADS();
+            if (!sensor.begin(servoAddress))
+            {
+                Serial.printf("Error connecting to flex sensor addr:%x\n", servoAddress);
+                ESP.restart();
+            }
+            Serial.printf("Flex connected, addr:%x\n", servoAddress);   
+        }
+    };
+    FlexSensorData *flexSensors; 
+    uint8_t numFlexSensors = 0;
     Gyro gyro;
-    float flexCalibrationData[7][2][2]={
-        {{0,100},{0,100}},
-        {{0,100},{0,100}},
-        {{0,100},{0,100}},
-        {{0,100},{0,100}},
-        {{0,100},{0,100}},
-        {{0,100},{0,100}},
-        {{0,100},{0,100}}}; //7 flex sensors 2 axis 2 values (min max)
-
+    char* formatSensorData(std::string name, float x, float y);
 public:
     Gauntlet(){};
-    Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, uint8_t little, uint8_t wrist, uint8_t elbow, uint8_t accel);
-    void setCalibration(float thumbMin, float thumbMax,
-                        float indexMin, float indexMax,
-                        float middleMin, float middleMax,
-                        float ringMin, float ringMax,
-                        float littleMin, float littleMax,
-                        float wristMinX, float wristMaxX,
-                        float wristMinY, float wristMaxY);
-    void begin();
+    void addFlexSensor(FlexSensor sensor);
     void loop();
-    const char* getName(byte addr);
-    char* formatSensorData(int addr, float x, float y);
-    void callbackFn(float x, float y, int addr, int num);
 };
