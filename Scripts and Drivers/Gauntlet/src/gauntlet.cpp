@@ -46,10 +46,10 @@ void Gauntlet::callbackFn(float x, float y, int addr, int num)
     Conn::endPacket();
 }
 
-Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, uint8_t little, uint8_t wrist, uint8_t gyro)
+Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, uint8_t little, uint8_t wrist, uint8_t elbow, uint8_t gyro)
 {
-    uint8_t addr[] = {thumb, index, middle, ring, little, wrist};
-    flexSensors = new MultiFlex(6, addr);
+    uint8_t addr[] = {thumb, index, middle, ring, little, wrist, elbow};
+    flexSensors = new MultiFlex(7, addr);
     //this->gyro = Gyro(gyro);
     for (int i = 0; i < 256; i++)
     {
@@ -62,12 +62,14 @@ Gauntlet::Gauntlet(uint8_t thumb, uint8_t index, uint8_t middle, uint8_t ring, u
     addrToIdx[ring] = 3;
     addrToIdx[little] = 4;
     addrToIdx[wrist] = 5;
+    addrToIdx[elbow] = 6;
     names[addrToIdx[thumb]]  = "thu";
     names[addrToIdx[index]]  = "ind";
     names[addrToIdx[middle]] = "mid";
     names[addrToIdx[ring]]   = "rin";
     names[addrToIdx[little]] = "lit";
     names[addrToIdx[wrist]]  = "wri";
+    names[addrToIdx[elbow]]  = "elb";
 }
 
 void Gauntlet::setCalibration(float thumbMin,  float thumbMax,

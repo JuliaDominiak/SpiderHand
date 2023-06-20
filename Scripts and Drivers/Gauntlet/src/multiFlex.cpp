@@ -6,6 +6,7 @@ MultiFlex::MultiFlex(int numFlex, uint8_t flexAdddresses[])
     this->flexSensors = (ADS *)malloc(sizeof(ADS) * numFlex);
     this->flexAdddresses = (uint8_t *)malloc(sizeof(uint8_t) * numFlex);
     memcpy(this->flexAdddresses, flexAdddresses, sizeof(uint8_t) * numFlex);
+    
 }
 
 void MultiFlex::begin()
@@ -53,6 +54,6 @@ void MultiFlex::loop()
         {
             continue;
         }
-        callbackFn(flexSensors[i].getX(), flexSensors[i].getY(), flexAdddresses[i], i);
+        //callbackFn(flexSensors[i].getX(), flexSensors[i].getY(), flexAdddresses[i], i);
     }
 }
