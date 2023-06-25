@@ -8,7 +8,7 @@ class Gyro{
     MPU6050 mpu;
     public:
     Gyro(){};
-    Gyro(uint8_t addr);
+    explicit Gyro(uint8_t addr);
     void begin();
     void loop();
 };

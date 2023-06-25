@@ -4,19 +4,26 @@
 
 Gauntlet gauntlet;
 
+// cppcheck-suppress unusedFunction
 void setup()
 {
     Serial.begin(115200);
     Wire.begin();
     gauntlet = Gauntlet(); 
-    gauntlet.addFlexSensor({"thu", 0x24, -175, -40, 0, 100});
-    gauntlet.addFlexSensor({"ind", 0x19, -170, -360, 0, 100});
-    gauntlet.addFlexSensor({"mid", 0x40, -100, -230, 0, 100});
-    gauntlet.addFlexSensor({"wri", 0x2d, -32, 40, -66, 12});
-    gauntlet.addFlexSensor({"elb", 0x33, 0, 100, 0, 100});
+    //"thu", 0x24, -175, -40, 0, 100
+    //"ind", 0x19, -170, -360, 0, 100
+    //"mid", 0x40, -100, -230, 0, 100
+    //"wri", 0x2d, -32, 40, -66, 12
+    //"elb", 0x33, 0, 100, 0, 100
+    gauntlet.addFlexSensor(FlexSensor("thu", 0x24, -175, -40, 0, 100));
+    gauntlet.addFlexSensor(FlexSensor("ind", 0x19, -170, -360, 0, 100));
+    gauntlet.addFlexSensor(FlexSensor("mid", 0x40, -100, -230, 0, 100));
+    gauntlet.addFlexSensor(FlexSensor("wri", 0x2d, -32, 40, -66, 12));
+    gauntlet.addFlexSensor(FlexSensor("elb", 0x33, 0, 100, 0, 100));
     Conn::begin("255.255.255.255", 1420); //port >1024?
 }
 
+// cppcheck-suppress unusedFunction
 void loop()
 {
     gauntlet.loop();

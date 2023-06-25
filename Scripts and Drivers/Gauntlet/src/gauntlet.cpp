@@ -26,31 +26,44 @@ void serialCallbackFn(float x, float y, int addr, int num)
     free(buf);
 }
 
-char *Gauntlet::formatSensorData(std::string name, float x, float y)
+Gauntlet::Gauntlet()
+{
+    flexSensors = (FlexSensorData **)malloc(sizeof(FlexSensorData *) * 0);
+}
+
+char *Gauntlet::formatSensorData(char* name, float x, float y)
 {
     char *buf = (char *)malloc(sizeof(char) * 18); // abc-179.12  -2.45\0
     sprintf(buf, "%s%7.2f%7.2f\0", name, x, y);
     return buf;
 }
 
-void Gauntlet::addFlexSensor(FlexSensor sensor){
+void Gauntlet::addFlexSensor(const FlexSensor sensor){
     numFlexSensors++;
-    flexSensors = (FlexSensorData*)realloc(flexSensors, sizeof(FlexSensorData)*numFlexSensors);
-    flexSensors[numFlexSensors-1] = FlexSensorData(sensor);
+    flexSensors = (FlexSensorData**)realloc(flexSensors, sizeof(FlexSensorData*)*numFlexSensors);
+    if (flexSensors == NULL){
+        Serial.println("Error allocating memory for flex sensors");
+        ESP.restart();
+    }
+    flexSensors[numFlexSensors-1] = new FlexSensorData(sensor);
 }
 
 void Gauntlet::loop()
 {
     for (int i = 0; i < numFlexSensors; i++)
     {
-        Conn::beginPacket();
-        float x = flexSensors[i].sensor.getX();
-        float y = flexSensors[i].sensor.getY();
-        float xCal = map_Generic<float>(x, flexSensors[i].minX, flexSensors[i].maxX, 0, 100);
-        float yCal = map_Generic<float>(y, flexSensors[i].minY, flexSensors[i].maxY, 0, 100);
-        char *buf = formatSensorData(flexSensors[i].jointName, xCal, yCal);
-        Conn::write(buf, 17);
+        //Conn::beginPacket();
+        float x = flexSensors[i]->sensor.getX();
+        float y = flexSensors[i]->sensor.getY();
+        float xCal = map_Generic<float>(x, flexSensors[i]->minX, flexSensors[i]->maxX, 0, 100);
+        float yCal = map_Generic<float>(y, flexSensors[i]->minY, flexSensors[i]->maxY, 0, 100);
+        serialCallbackFn(xCal, yCal, flexSensors[i]->servoAddress, i);
+        char *buf = formatSensorData(flexSensors[i]->jointName, xCal, yCal);
+        Serial.println(buf);
         free(buf);
-        Conn::endPacket();
+        //Conn::write(buf, 17);
+        //free(buf);
+        
+        //Conn::endPacket();
     }
 }
