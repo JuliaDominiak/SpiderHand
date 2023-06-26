@@ -30,4 +30,7 @@ class Filtered {
     T get() {
         return this->previous;
     }
+    operator T() const {
+        return this->previous;
+    }
 };
