@@ -57,10 +57,10 @@ void Gauntlet::loop()
             continue;
         }
         Conn::beginPacket();
-        float x = flexSensors[i]->sensor.getX();
-        float y = flexSensors[i]->sensor.getY();
-        float xCal = map_Generic<float>(x, flexSensors[i]->minX, flexSensors[i]->maxX, 0, 100);
-        float yCal = map_Generic<float>(y, flexSensors[i]->minY, flexSensors[i]->maxY, 0, 100);
+        flexSensors[i]->x = flexSensors[i]->sensor.getX();
+        flexSensors[i]->y = flexSensors[i]->sensor.getY();
+        float xCal = map_Generic<float>(flexSensors[i]->x.get(), flexSensors[i]->minX, flexSensors[i]->maxX, 0, 100);
+        float yCal = map_Generic<float>(flexSensors[i]->y.get(), flexSensors[i]->minY, flexSensors[i]->maxY, 0, 100);
         // serialCallbackFn(xCal, yCal, flexSensors[i]->servoAddress, i);
         char *buf = formatSensorData(flexSensors[i]->jointName, xCal, yCal);
         Serial.println(buf);
