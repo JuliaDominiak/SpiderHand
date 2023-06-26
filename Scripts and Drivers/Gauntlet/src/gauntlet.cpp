@@ -52,18 +52,21 @@ void Gauntlet::loop()
 {
     for (int i = 0; i < numFlexSensors; i++)
     {
-        //Conn::beginPacket();
+        if (!flexSensors[i]->sensor.isConnected() || !flexSensors[i]->sensor.available())
+        {
+            continue;
+        }
+        Conn::beginPacket();
         float x = flexSensors[i]->sensor.getX();
         float y = flexSensors[i]->sensor.getY();
         float xCal = map_Generic<float>(x, flexSensors[i]->minX, flexSensors[i]->maxX, 0, 100);
         float yCal = map_Generic<float>(y, flexSensors[i]->minY, flexSensors[i]->maxY, 0, 100);
-        serialCallbackFn(xCal, yCal, flexSensors[i]->servoAddress, i);
+        // serialCallbackFn(xCal, yCal, flexSensors[i]->servoAddress, i);
         char *buf = formatSensorData(flexSensors[i]->jointName, xCal, yCal);
         Serial.println(buf);
-        free(buf);
-        //Conn::write(buf, 17);
         //free(buf);
-        
-        //Conn::endPacket();
+        Conn::write(buf, 17);
+        free(buf);
+        Conn::endPacket();
     }
 }
