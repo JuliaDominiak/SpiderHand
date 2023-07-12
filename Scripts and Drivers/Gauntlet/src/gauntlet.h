@@ -6,6 +6,10 @@
 #include "filter.h"
 #include <map>
 
+#ifndef FILTER_EXP
+#define FILTER_EXP 0.01
+#endif
+
 #pragma once
 
 struct FlexSensor{
@@ -50,8 +54,8 @@ struct FlexSensorData {
             ESP.restart();
         }
         Serial.printf("Flex connected, addr:%x\n", servoAddress);  
-        x = Filtered<float>(0.01);
-        y = Filtered<float>(0.01); 
+        x = Filtered<float>(FILTER_EXP);
+        y = Filtered<float>(FILTER_EXP); 
     }
 };
 
