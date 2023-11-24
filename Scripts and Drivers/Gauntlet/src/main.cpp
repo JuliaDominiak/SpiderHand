@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#define FILTER_EXP 0.99 //1 - no filtering, 0 - no change (max filtering)
 #include "gauntlet.h"
 #include "conn.h"
 
@@ -16,7 +15,7 @@ void setup()
     gauntlet.addFlexSensor(FlexSensor("mid", 0x40, -100, -230, 0, 100));
     gauntlet.addFlexSensor(FlexSensor("wri", 0x2d, -32, 40, -66, 12));
     gauntlet.addFlexSensor(FlexSensor("elb", 0x33, -2, 560, 0, 100));
-    Conn::begin("255.255.255.255", 1420); //port >1024?
+    Conn::begin("255.255.255.255", 1420); //broadcast
 }
 
 // cppcheck-suppress unusedFunction

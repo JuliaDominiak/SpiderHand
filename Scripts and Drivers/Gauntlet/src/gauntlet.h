@@ -3,12 +3,16 @@
 #include "gyro.h"
 #include "utils.h"
 #include "SparkFun_Displacement_Sensor_Arduino_Library.h"
-#include "filter.h"
+#include "filters.h"
 #include <map>
 
-#ifndef FILTER_EXP
-#define FILTER_EXP 0.01
+#ifndef FILTER_EPS
+#define FILTER_EPS 5
 #endif
+
+// #ifndef EPSILON
+// #define EPSILON 2
+// #endif
 
 #pragma once
 
@@ -37,8 +41,10 @@ struct FlexSensorData {
     float minY;
     float maxY;
     ADS sensor;
-    Filtered<float> x;
-    Filtered<float> y;
+    FastFiltered<float> x;
+    FastFiltered<float> y;
+    float previousX = MAXFLOAT;
+    float previousY = MAXFLOAT;
 
     explicit FlexSensorData(const FlexSensor definition){
         memcpy(jointName, definition.jointName, 4);
@@ -54,8 +60,8 @@ struct FlexSensorData {
             ESP.restart();
         }
         Serial.printf("Flex connected, addr:%x\n", servoAddress);  
-        x = Filtered<float>(FILTER_EXP);
-        y = Filtered<float>(FILTER_EXP); 
+        x = FastFiltered<float>(FILTER_EPS);
+        y = FastFiltered<float>(FILTER_EPS); 
     }
 };
 
