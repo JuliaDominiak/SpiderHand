@@ -65,8 +65,8 @@ void Gauntlet::loop()
         //     (abs(yCal - flexSensors[i]->previousY) >= EPSILON)
         // )
         // {
-        flexSensors[i]->previousX = xCal;
-        flexSensors[i]->previousY = yCal;
+        // flexSensors[i]->previousX = xCal;
+        // flexSensors[i]->previousY = yCal;
         // serialCallbackFn(xCal, yCal, flexSensors[i]->servoAddress, i);
         char *buf = formatSensorData(flexSensors[i]->jointName, xCal, yCal); //(thu   0.00   0.00)
         Serial.println(buf);

@@ -60,7 +60,7 @@ class FastFiltered {
             this->initialized = true;
             return this->previous;
         }
-        if (value < this->previous + this->eps && value > this->previous - this->eps) {
+        if ((value < (this->previous + this->eps)) && (value > (this->previous - this->eps))) {
             this->direction = 0;
             return this->previous;
         }

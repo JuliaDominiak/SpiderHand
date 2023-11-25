@@ -6,14 +6,6 @@
 #include "filters.h"
 #include <map>
 
-#ifndef FILTER_EPS
-#define FILTER_EPS 5
-#endif
-
-// #ifndef EPSILON
-// #define EPSILON 2
-// #endif
-
 #pragma once
 
 struct FlexSensor{
@@ -23,13 +15,15 @@ struct FlexSensor{
     float maxX;
     float minY;
     float maxY;
-    FlexSensor(const char* name, int addr, float minx, float maxx, float miny, float maxy){
+    float filterEps;
+    FlexSensor(const char* name, int addr, float minx, float maxx, float miny, float maxy, float filtereps = 5){
         memcpy(jointName, name, 4);
         servoAddress = addr;
         minX = minx;
         maxX = maxx;
         minY = miny;
         maxY = maxy;
+        filterEps = filtereps;
     }
 };
 
@@ -43,8 +37,8 @@ struct FlexSensorData {
     ADS sensor;
     FastFiltered<float> x;
     FastFiltered<float> y;
-    float previousX = MAXFLOAT;
-    float previousY = MAXFLOAT;
+    // float previousX = MAXFLOAT;
+    // float previousY = MAXFLOAT;
 
     explicit FlexSensorData(const FlexSensor definition){
         memcpy(jointName, definition.jointName, 4);
@@ -59,9 +53,8 @@ struct FlexSensorData {
             Serial.printf("Error connecting to flex sensor addr:%x\n", servoAddress);
             ESP.restart();
         }
-        Serial.printf("Flex connected, addr:%x\n", servoAddress);  
-        x = FastFiltered<float>(FILTER_EPS);
-        y = FastFiltered<float>(FILTER_EPS); 
+        x = FastFiltered<float>(definition.filterEps);
+        y = FastFiltered<float>(definition.filterEps); 
     }
 };
 
