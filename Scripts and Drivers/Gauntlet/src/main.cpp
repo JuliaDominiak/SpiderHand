@@ -13,7 +13,7 @@ void setup()
     gauntlet.addFlexSensor(FlexSensor("thu", 0x24, -175, -40, 0, 100, 2));
     gauntlet.addFlexSensor(FlexSensor("ind", 0x19, -170, -360, 0, 100, 2));
     gauntlet.addFlexSensor(FlexSensor("mid", 0x40, -100, -230, 0, 100, 2));
-    gauntlet.addFlexSensor(FlexSensor("wri", 0x2d, -32, 40, -66, 12, 2));
+    gauntlet.addFlexSensor(FlexSensor("wri", 0x2d, -32, 40, -66, 12, 1));
     gauntlet.addFlexSensor(FlexSensor("elb", 0x33, -2, 560, 0, 100, 10));
     Conn::begin("255.255.255.255", 1420); //broadcast
 }
